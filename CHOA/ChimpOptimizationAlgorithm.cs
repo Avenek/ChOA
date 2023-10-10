@@ -73,9 +73,7 @@ namespace CHOA
                     chimp.UpdatePositionExplore(xAttacker, xChaser, xBarrier, xDriver);
                     CalculateParameters(chimp);
                 }
-
-
-
+                UpdateBestChimpsPosition();
                 currentIteration++;
             }
             FBest = fitnessFunction.CalculateFitnesse(xAttacker.coordinates);
@@ -134,7 +132,6 @@ namespace CHOA
             double[] dChaser = xChaser.CalculateD(xChaser);
             double[] dBarrier = xBarrier.CalculateD(xBarrier);
             double[] dDriver = xDriver.CalculateD(xDriver);
-
             xAttacker.coordinates = xAttacker.CalculateX(xAttacker, dAttacker);
             xChaser.coordinates = xChaser.CalculateX(xChaser, dChaser);
             xBarrier.coordinates = xBarrier.CalculateX(xBarrier, dBarrier);
