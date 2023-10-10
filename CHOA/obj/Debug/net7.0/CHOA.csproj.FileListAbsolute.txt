@@ -1,0 +1,15 @@
+C:\Users\Jakub\Desktop\Programowanie\CHOA\CHOA\bin\Debug\net7.0\CHOA.exe
+C:\Users\Jakub\Desktop\Programowanie\CHOA\CHOA\bin\Debug\net7.0\CHOA.deps.json
+C:\Users\Jakub\Desktop\Programowanie\CHOA\CHOA\bin\Debug\net7.0\CHOA.runtimeconfig.json
+C:\Users\Jakub\Desktop\Programowanie\CHOA\CHOA\bin\Debug\net7.0\CHOA.dll
+C:\Users\Jakub\Desktop\Programowanie\CHOA\CHOA\bin\Debug\net7.0\CHOA.pdb
+C:\Users\Jakub\Desktop\Programowanie\CHOA\CHOA\obj\Debug\net7.0\CHOA.csproj.AssemblyReference.cache
+C:\Users\Jakub\Desktop\Programowanie\CHOA\CHOA\obj\Debug\net7.0\CHOA.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Jakub\Desktop\Programowanie\CHOA\CHOA\obj\Debug\net7.0\CHOA.AssemblyInfoInputs.cache
+C:\Users\Jakub\Desktop\Programowanie\CHOA\CHOA\obj\Debug\net7.0\CHOA.AssemblyInfo.cs
+C:\Users\Jakub\Desktop\Programowanie\CHOA\CHOA\obj\Debug\net7.0\CHOA.csproj.CoreCompileInputs.cache
+C:\Users\Jakub\Desktop\Programowanie\CHOA\CHOA\obj\Debug\net7.0\CHOA.dll
+C:\Users\Jakub\Desktop\Programowanie\CHOA\CHOA\obj\Debug\net7.0\refint\CHOA.dll
+C:\Users\Jakub\Desktop\Programowanie\CHOA\CHOA\obj\Debug\net7.0\CHOA.pdb
+C:\Users\Jakub\Desktop\Programowanie\CHOA\CHOA\obj\Debug\net7.0\CHOA.genruntimeconfig.cache
+C:\Users\Jakub\Desktop\Programowanie\CHOA\CHOA\obj\Debug\net7.0\ref\CHOA.dll
