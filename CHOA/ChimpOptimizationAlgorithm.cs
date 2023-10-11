@@ -102,9 +102,10 @@ namespace CHOA
 
         private void InitializePopulation()
         {
-            Chimp chimp = new Chimp(DIMENSION);
+            
             for (int i = 0; i < POPULATION_SIZE; i++)
             {
+                Chimp chimp = new Chimp(DIMENSION);
                 for (int j = 0; j < DIMENSION; j++)
                 {
                     chimp.coordinates[j] = random.NextDouble() * (fitnessFunction.variation + fitnessFunction.variation) - fitnessFunction.variation;

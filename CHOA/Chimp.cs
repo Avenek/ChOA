@@ -74,7 +74,6 @@ namespace CHOA
         }
         public void UpdatePositionExplore(Chimp xAttacker, Chimp xChaser, Chimp xBarrier, Chimp xDriver)
         {
-
             double dAttacker = CalculateD(xAttacker);
             double dChaser = CalculateD(xChaser);
             double dBarrier = CalculateD(xBarrier);

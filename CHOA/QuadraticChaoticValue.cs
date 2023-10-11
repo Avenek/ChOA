@@ -20,7 +20,7 @@ namespace CHOA
         public void Calculate()
         {
             value = value * value - c;
-            if (!(value > 0)) { value = 0.9; }
+            if (!(value > 0)) { value = 0.7; }
         }
     }
 }
