@@ -70,10 +70,29 @@ namespace CHOA
 
                 foreach (Chimp chimp in population)
                 {
-                    chimp.UpdatePositionExplore(xAttacker, xChaser, xBarrier, xDriver);
+                    if(random.NextDouble() > 0.5)
+                    {
+                        if(Math.Abs(chimp.a) < 1)
+                        {
+                            chimp.UpdatePositionExplore(xAttacker, xChaser, xBarrier, xDriver);
+                        }
+                        else
+                        {
+                            chimp.coordinates = population[random.Next(population.Count)].coordinates;
+                        }
+                    }
+                    else
+                    {
+                        chimp.UpdatePositionChaoticValue();
+                    }
+                    double fitness = fitnessFunction.CalculateFitnesse(chimp.coordinates);
+                    chimp.fitness = fitness;
                     CalculateParameters(chimp);
                 }
+                sortedChimps = population.OrderBy(chimp => chimp.fitness).ToList();
+                InitializeBestAgents(sortedChimps);
                 UpdateBestChimpsPosition();
+                
                 currentIteration++;
             }
             FBest = fitnessFunction.CalculateFitnesse(xAttacker.coordinates);
@@ -120,7 +139,7 @@ namespace CHOA
 
         public void CalculateParameters(Chimp chimp)
         {
-            chimp.CalculateF(currentIteration, MAX_ITERATION);
+            chimp.f = chimp.CalculateFTwo(currentIteration, MAX_ITERATION);
             chimp.CalculateM();
             chimp.CalculateA();
             chimp.CalculateC();
@@ -128,10 +147,10 @@ namespace CHOA
 
         public void UpdateBestChimpsPosition()
         {
-            double[] dAttacker = xAttacker.CalculateD(xAttacker);
-            double[] dChaser = xChaser.CalculateD(xChaser);
-            double[] dBarrier = xBarrier.CalculateD(xBarrier);
-            double[] dDriver = xDriver.CalculateD(xDriver);
+            double dAttacker = xAttacker.CalculateD(xAttacker);
+            double dChaser = xChaser.CalculateD(xChaser);
+            double dBarrier = xBarrier.CalculateD(xBarrier);
+            double dDriver = xDriver.CalculateD(xDriver);
             xAttacker.coordinates = xAttacker.CalculateX(xAttacker, dAttacker);
             xChaser.coordinates = xChaser.CalculateX(xChaser, dChaser);
             xBarrier.coordinates = xBarrier.CalculateX(xBarrier, dBarrier);

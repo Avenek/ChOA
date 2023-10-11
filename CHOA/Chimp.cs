@@ -13,11 +13,10 @@ namespace CHOA
         public int dimension;
         public double fitness;
         int strategy;
-        double f;
+        public double f;
         QuadraticChaoticValue m = new QuadraticChaoticValue();
-        double a;
+        public double a;
         double c;
-        double[] d;
 
         private static Random random = new Random();
 
@@ -26,23 +25,18 @@ namespace CHOA
             coordinates = new double[dimension];
             this.dimension = dimension;
         }
-
-        public void CalculateF(int currentIteration, int maxIteration)
+        public double CalculateFTwo(int currentIteration, int maxIteration)
         {
             switch (strategy)
             {
                 case 1:
-                    f = 1.95 - 2 * (Math.Pow(currentIteration, 1 / 4)) / Math.Pow(maxIteration, 1 / 3);
-                    break;
+                    return 2.5 - (2 * Math.Log(currentIteration) / Math.Log(maxIteration));
                 case 2:
-                    f = 1.95 - 2 * (Math.Pow(currentIteration, 1 / 3)) / Math.Pow(maxIteration, 1 / 4);
-                    break;
+                    return (-2 * Math.Pow(currentIteration, 3) / Math.Pow(maxIteration, 3)) + 2.5;
                 case 3:
-                    f = (-3 * Math.Pow(currentIteration, 3) / Math.Pow(maxIteration, 3)) + 1.5;
-                    break;
+                    return 0.5 + 2 * Math.Exp(-1 * Math.Pow((4 * currentIteration / maxIteration), 2));
                 default:
-                    f = (-2 * Math.Pow(currentIteration, 3) / Math.Pow(maxIteration, 3)) + 1.5;
-                    break;
+                    return 2.5 + 2 * Math.Pow((currentIteration / maxIteration), 2) - 2 * (2 * currentIteration / maxIteration);
             }
         }
         public void CalculateM()
@@ -59,33 +53,32 @@ namespace CHOA
             c = 2 * random.NextDouble();
         }
 
-        public double[] CalculateD(Chimp chimp)
+        public double CalculateD(Chimp chimp)
         {
             double[] d = new double[dimension];
             for (int i = 0; i < dimension; i++)
             {
                 d[i] = chimp.c * chimp.coordinates[i] - chimp.m.value * coordinates[i];
             }
-            return d;
+            return Math.Sqrt(d.Sum(xi=>xi* xi));
         }
 
-        public double[] CalculateX(Chimp chimp, double[] d)
+        public double[] CalculateX(Chimp chimp, double d)
         {
             double[] x = new double[dimension];
             for (int i = 0; i < dimension; i++)
             {
-                x[i] = chimp.coordinates[i] - chimp.a * d[i];
+                x[i] = chimp.coordinates[i] - chimp.a * d;
             }
             return x;
         }
         public void UpdatePositionExplore(Chimp xAttacker, Chimp xChaser, Chimp xBarrier, Chimp xDriver)
         {
-            double[] newPosition = new double[dimension];
 
-            double[] dAttacker = CalculateD(xAttacker);
-            double[] dChaser = CalculateD(xChaser);
-            double[] dBarrier = CalculateD(xBarrier);
-            double[] dDriver = CalculateD(xDriver);
+            double dAttacker = CalculateD(xAttacker);
+            double dChaser = CalculateD(xChaser);
+            double dBarrier = CalculateD(xBarrier);
+            double dDriver = CalculateD(xDriver);
 
             double[] x1 = CalculateX(xAttacker, dAttacker);
             double[] x2 = CalculateX(xChaser, dChaser);
@@ -94,23 +87,17 @@ namespace CHOA
 
             for (int i = 0; i < dimension; i++)
             {
-                newPosition[i] = (x1[i] + x2[i] + x3[i] + x4[i])/4;
+               coordinates[i] = (x1[i] + x2[i] + x3[i] + x4[i])/4;
             }
-
-            coordinates = newPosition;
         }
 
-        /*public double[] UpdatePositionChaoticValue()
+        public void UpdatePositionChaoticValue()
         {
-            var newPosition = new double[dimension];
-
             for (int i = 0; i < dimension; i++)
             {
-                m.Calculate();
-                newPosition[i] = m.value;
+                coordinates[i] *= m.value;
             }
-            return newPosition;
-        }*/
+        }
 
         public void setGroup(int group)
         {
