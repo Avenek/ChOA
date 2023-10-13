@@ -44,55 +44,20 @@ namespace CHOA
         {
 
             InitializePopulation();
-            foreach (Chimp chimp in population)
-            {
-                double fitness = fitnessFunction.CalculateFitnesse(chimp.coordinates);
-                chimp.fitness = fitness;
-            }
-            List<Chimp> sortedChimps = population.OrderBy(chimp => chimp.fitness).ToList();
-            InitializeBestAgents(sortedChimps);
-
-
-            List<List<Chimp>> groups = DivideChimpsIntoGroups();
+            CalculateFittnesForEachChimp();
+            ChooseBestAgents();
+            DivideChimpsIntoGroups();
 
             while(currentIteration <= MAX_ITERATION)
             {
-                int currentGroup = 1;
-                foreach (var group in groups)
-                {
-                    foreach (Chimp chimp in group)
-                    {
-                        CalculateParameters(chimp);
-                        chimp.setGroup(currentGroup);
-                    }
-                    currentGroup++;
-                }
-
                 foreach (Chimp chimp in population)
                 {
-                    if(random.NextDouble() > 0.5)
-                    {
-                        if(Math.Abs(chimp.a) < 1)
-                        {
-                            chimp.UpdatePositionExplore(xAttacker, xChaser, xBarrier, xDriver);
-                        }
-                        else
-                        {
-                            chimp.coordinates = population[random.Next(population.Count)].coordinates;
-                        }
-                    }
-                    else
-                    {
-                        chimp.UpdatePositionChaoticValue();
-                    }
-                    double fitness = fitnessFunction.CalculateFitnesse(chimp.coordinates);
-                    chimp.fitness = fitness;
                     CalculateParameters(chimp);
+                    UpdateChimpPositionByRules(chimp);
+                    chimp.fitness = fitnessFunction.CalculateFitnesse(chimp.coordinates);
                 }
-                sortedChimps = population.OrderBy(chimp => chimp.fitness).ToList();
-                InitializeBestAgents(sortedChimps);
+                ChooseBestAgents();
                 UpdateBestChimpsPosition();
-                
                 currentIteration++;
             }
             FBest = fitnessFunction.CalculateFitnesse(xAttacker.coordinates);
@@ -102,7 +67,6 @@ namespace CHOA
 
         private void InitializePopulation()
         {
-            
             for (int i = 0; i < POPULATION_SIZE; i++)
             {
                 Chimp chimp = new Chimp(DIMENSION);
@@ -114,20 +78,34 @@ namespace CHOA
             }
         }
 
-        private List<List<Chimp>> DivideChimpsIntoGroups()
+        private void CalculateFittnesForEachChimp()
+        {
+            foreach (Chimp chimp in population)
+            {
+                chimp.fitness = fitnessFunction.CalculateFitnesse(chimp.coordinates);
+            }
+        }
+
+        private void DivideChimpsIntoGroups()
         {
             int numberOfGroups = 4;
             var shuffledPopulation = population.OrderBy(x => random.Next()).ToList();
-            var groups = new List<List<Chimp>>();
             int groupSize = population.Count / numberOfGroups;
 
             for (int i = 0; i < numberOfGroups; i++)
             {
                 var group = shuffledPopulation.Skip(i * groupSize).Take(groupSize).ToList();
-                groups.Add(group);
+                foreach(Chimp chimp in group)
+                {
+                    chimp.setGroup(i);
+                }
             }
+        }
 
-            return groups;
+        public void ChooseBestAgents()
+        {
+            List<Chimp> sortedChimps = population.OrderBy(chimp => chimp.fitness).ToList();
+            InitializeBestAgents(sortedChimps);
         }
 
         private void InitializeBestAgents(List<Chimp> chimps)
@@ -140,7 +118,7 @@ namespace CHOA
 
         public void CalculateParameters(Chimp chimp)
         {
-            chimp.f = chimp.CalculateFTwo(currentIteration, MAX_ITERATION);
+            chimp.CalculateF(currentIteration, MAX_ITERATION);
             chimp.CalculateM();
             chimp.CalculateA();
             chimp.CalculateC();
@@ -156,6 +134,25 @@ namespace CHOA
             xChaser.coordinates = xChaser.CalculateX(xChaser, dChaser);
             xBarrier.coordinates = xBarrier.CalculateX(xBarrier, dBarrier);
             xDriver.coordinates = xDriver.CalculateX(xDriver, dDriver);
+        }
+
+        public void UpdateChimpPositionByRules(Chimp chimp)
+        {
+            if (random.NextDouble() > 0.5)
+            {
+                if (Math.Abs(chimp.a) < 1)
+                {
+                    chimp.UpdatePositionExplore(xAttacker, xChaser, xBarrier, xDriver);
+                }
+                else
+                {
+                    chimp.coordinates = population[random.Next(population.Count)].coordinates;
+                }
+            }
+            else
+            {
+                chimp.UpdatePositionChaoticValue();
+            }
         }
     }
 }

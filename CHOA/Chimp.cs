@@ -12,11 +12,11 @@ namespace CHOA
         public double[] coordinates;
         public int dimension;
         public double fitness;
-        int strategy;
+        public int strategy;
         public double f;
-        QuadraticChaoticValue m = new QuadraticChaoticValue();
+        public double m = 0.7;
         public double a;
-        double c;
+        public double c;
 
         private static Random random = new Random();
 
@@ -25,23 +25,28 @@ namespace CHOA
             coordinates = new double[dimension];
             this.dimension = dimension;
         }
-        public double CalculateFTwo(int currentIteration, int maxIteration)
+        public void CalculateF(int currentIteration, int maxIteration)
         {
             switch (strategy)
             {
+                case 0:
+                    f = 2.5 - (2 * Math.Log(currentIteration) / Math.Log(maxIteration));
+                    break;
                 case 1:
-                    return 2.5 - (2 * Math.Log(currentIteration) / Math.Log(maxIteration));
+                    f = (-2 * Math.Pow(currentIteration, 3) / Math.Pow(maxIteration, 3)) + 2.5;
+                    break;
                 case 2:
-                    return (-2 * Math.Pow(currentIteration, 3) / Math.Pow(maxIteration, 3)) + 2.5;
-                case 3:
-                    return 0.5 + 2 * Math.Exp(-1 * Math.Pow((4 * currentIteration / maxIteration), 2));
+                    f = 0.5 + 2 * Math.Exp(-1 * Math.Pow((4 * currentIteration / maxIteration), 2));
+                    break;
                 default:
-                    return 2.5 + 2 * Math.Pow((currentIteration / maxIteration), 2) - 2 * (2 * currentIteration / maxIteration);
+                    f = 2.5 + 2 * Math.Pow((currentIteration / maxIteration), 2) - 2 * (2 * currentIteration / maxIteration);
+                    break;
             }
         }
         public void CalculateM()
         {
-            m.Calculate();
+            m = m * m - 1;
+            if (!(m > 0)) { m = 0.7; }
         }
         public void CalculateA()
         {
@@ -58,7 +63,7 @@ namespace CHOA
             double[] d = new double[dimension];
             for (int i = 0; i < dimension; i++)
             {
-                d[i] = chimp.c * chimp.coordinates[i] - chimp.m.value * coordinates[i];
+                d[i] = chimp.c * chimp.coordinates[i] - chimp.m * coordinates[i];
             }
             return Math.Sqrt(d.Sum(xi=>xi* xi));
         }
@@ -94,7 +99,7 @@ namespace CHOA
         {
             for (int i = 0; i < dimension; i++)
             {
-                coordinates[i] *= m.value;
+                coordinates[i] *= m;
             }
         }
 

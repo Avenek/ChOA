@@ -9,7 +9,7 @@ namespace CHOA
 {
     internal class Rosenbrock : IFitnessFunction
     {
-        public double variation { get { return 100; } }
+        public double variation { get { return 10000000000; } }
         public double CalculateFitnesse(double[] position)
         {
             double value = 0;
