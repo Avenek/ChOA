@@ -152,6 +152,7 @@ namespace CHOA
             else
             {
                 chimp.UpdatePositionChaoticValue();
+
             }
         }
     }

@@ -45,8 +45,7 @@ namespace CHOA
         }
         public void CalculateM()
         {
-            m = m * m - 1;
-            if (!(m > 0)) { m = 0.7; }
+            m = 1.07 * (7.86 * m - 23.31 * m * m + 28.75 * m * m * m - 13.302875 * m * m * m * m);
         }
         public void CalculateA()
         {
@@ -99,7 +98,7 @@ namespace CHOA
         {
             for (int i = 0; i < dimension; i++)
             {
-                coordinates[i] *= m;
+                coordinates[i] *= random.NextDouble()*1.5;
             }
         }
 
