@@ -25,7 +25,7 @@ namespace CHOA
 
         List<Chimp> population = new List<Chimp>();
 
-        Chimp xAttacker;
+        public Chimp xAttacker;
         Chimp xChaser;
         Chimp xBarrier;
         Chimp xDriver;
@@ -34,7 +34,7 @@ namespace CHOA
         double maxM;
         double minM;
 
-        public ChimpOptimizationAlgorithm(int population, int dimension, int iteration, IFitnessFunction function, double minM, double maxM=1)
+        public ChimpOptimizationAlgorithm(int population, int dimension, int iteration, IFitnessFunction function, double minM, double maxM)
         {
             POPULATION_SIZE = population;
             DIMENSION = dimension;

@@ -102,7 +102,7 @@ namespace CHOA
         {
             for (int i = 0; i < dimension; i++)
             {
-                coordinates[i] *= random.NextDouble()*(maxM+minM) - minM;
+                coordinates[i] *= random.NextDouble()* (maxM - minM) + minM;
             }
         }
 
