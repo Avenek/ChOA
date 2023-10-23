@@ -11,7 +11,7 @@ namespace CHOA
         public double variation { get { return 100000000; } }
         public double CalculateFitnesse(double[] position)
         {
-            return position.Sum(xi => xi * xi);
+            return position.Sum(xi => Math.Pow((xi-1),2));
         }
     }
 }

@@ -30,14 +30,18 @@ namespace CHOA
         Chimp xBarrier;
         Chimp xDriver;
 
-        IFitnessFunction fitnessFunction = new Rastrigin();
+        IFitnessFunction fitnessFunction;
+        double maxM;
+        double minM;
 
-        public ChimpOptimizationAlgorithm(int population, int dimension, int iteration, IFitnessFunction function)
+        public ChimpOptimizationAlgorithm(int population, int dimension, int iteration, IFitnessFunction function, double minM, double maxM=1)
         {
             POPULATION_SIZE = population;
             DIMENSION = dimension;
             MAX_ITERATION = iteration;
             fitnessFunction = function;
+            this.maxM = maxM;
+            this.minM = minM;
         }
 
         public double Solve()
@@ -69,7 +73,7 @@ namespace CHOA
         {
             for (int i = 0; i < POPULATION_SIZE; i++)
             {
-                Chimp chimp = new Chimp(DIMENSION);
+                Chimp chimp = new Chimp(DIMENSION, minM, maxM);
                 for (int j = 0; j < DIMENSION; j++)
                 {
                     chimp.coordinates[j] = random.NextDouble() * (fitnessFunction.variation + fitnessFunction.variation) - fitnessFunction.variation;
