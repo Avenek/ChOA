@@ -33,8 +33,10 @@ namespace CHOA
         IFitnessFunction fitnessFunction;
         double maxM;
         double minM;
+        double maxC;
+        double minC;
 
-        public ChimpOptimizationAlgorithm(int population, int dimension, int iteration, IFitnessFunction function, double minM, double maxM)
+        public ChimpOptimizationAlgorithm(int population, int dimension, int iteration, IFitnessFunction function, double minM, double maxM, double minC, double maxC)
         {
             POPULATION_SIZE = population;
             DIMENSION = dimension;
@@ -42,6 +44,8 @@ namespace CHOA
             fitnessFunction = function;
             this.maxM = maxM;
             this.minM = minM;
+            this.maxC = maxC;
+            this.minC = minC;
         }
 
         public double Solve()
@@ -73,10 +77,28 @@ namespace CHOA
         {
             for (int i = 0; i < POPULATION_SIZE; i++)
             {
-                Chimp chimp = new Chimp(DIMENSION, minM, maxM);
+                Chimp chimp = new Chimp(DIMENSION, minM, maxM, minC, maxC);
                 for (int j = 0; j < DIMENSION; j++)
                 {
-                    chimp.coordinates[j] = random.NextDouble() * (fitnessFunction.variation + fitnessFunction.variation) - fitnessFunction.variation;
+                    //Bukin
+                    if(fitnessFunction.variation == 0)
+                    {
+                        if (j == 0)
+                        {
+                            chimp.coordinates[j] = random.NextDouble() * (-10) - 5;
+                        }
+                        else
+                        {
+                            chimp.coordinates[j] = random.NextDouble() * 6 - 3;
+                        }
+                        
+                    }
+                    //Reszta
+                    else
+                    {
+                        chimp.coordinates[j] = random.NextDouble() * (fitnessFunction.variation + fitnessFunction.variation) - fitnessFunction.variation;
+                    }
+                    
                 }
                 population.Add(chimp);
             }

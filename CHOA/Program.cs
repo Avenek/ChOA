@@ -1,125 +1,55 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Text;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace CHOA
 {
     internal class Program
     {
-        public static void TestAlgorithm(IFitnessFunction function)
-        {
-            Stopwatch stoper = new Stopwatch();
-            stoper.Start();
-            List<BestParameters> bestChimps = new List<BestParameters>();
-            for (int iterations = 10; iterations < 100; iterations += 10)
-            {
-                for (int population = 10; population < 100; population += 10)
-                {
-                    for (double minM = 0; minM < 1.9; minM += 0.1)
-                    {
-                        for (double maxM = minM + 0.1; maxM < 2; maxM += 0.1)
-                        {
-                            List<BestParameters> bestX = new List<BestParameters>();
-                            for (int iter = 0; iter < 10; iter++)
-                            {
-                                ChimpOptimizationAlgorithm CHOA = new ChimpOptimizationAlgorithm(population, 5, iterations, function, minM, maxM);
-                                CHOA.Solve();
-                                double distance = Math.Sqrt(CHOA.XBest.Sum(xi => Math.Pow(xi - 1, 2)));
-                                BestParameters bestParam = new BestParameters(CHOA.xAttacker, minM, maxM, population, iterations, distance);
-                                bestX.Add(bestParam);
-                            }
-                            bestX = bestX.OrderBy(chimp => chimp.distance).ToList();
-                            bestChimps.Add(bestX[0]);
-                        }
-                    }
-                }
-            }
-            bestChimps = bestChimps.OrderBy(param => param.distance).ToList();
-            stoper.Stop();
-
-            Console.WriteLine($"Populacja: {bestChimps[0].population}\nIteracji: {bestChimps[0].iterations}\n MinM: {bestChimps[0].minM}\n MaxM: {bestChimps[0].maxM}\n Coordinates: {String.Join(" ; ", bestChimps[0].chimp.coordinates)}\n Wartość: {bestChimps[0].chimp.fitness}\n\"Czas wykonania algorytmu: {stoper.Elapsed.TotalSeconds} s");
-        }
         static void Main()
         {
-            //Console.WriteLine("Rastrigin (0,0,0...)");
-            /*for (int i = 0; i < 10; i++)
-            {
-                IFitnessFunction fitnessFunction = new Rastrigin();
-                ChimpOptimizationAlgorithm CHOA = new ChimpOptimizationAlgorithm(50, 20, 100, fitnessFunction);
-                CHOA.Solve();
-                Console.WriteLine($"Wektor: {String.Join("; ", CHOA.XBest)}\nWartość: {CHOA.FBest}");
-            }*/
+            Console.WriteLine("Rastrigin (0,0,0...)");
+            IFitnessFunction fitnessFunction = new Rastrigin();
+            Raport raport = new Raport("Rastrigin", 5, 40, 80, fitnessFunction);
+            raport.TestAlgorithm();
+            Raport raport2 = new Raport("Rastrigin", 20, 60, 100, fitnessFunction);
+            raport2.TestAlgorithm();
             Console.WriteLine("-------------------------------------------\nRosenbrock (1,1,1,1...)");
 
+            fitnessFunction = new Rosenbrock();
+            raport = new Raport("Rosenbrock", 3, 40, 80, fitnessFunction);
+            raport.TestAlgorithm();
+            raport2 = new Raport("Rosenbrock", 15, 60, 100, fitnessFunction);
+            raport2.TestAlgorithm();
 
-            for (int i = 0; i < 20; i++)
-            {
-                IFitnessFunction fitnessFunction = new Rosenbrock();
-                ChimpOptimizationAlgorithm CHOA = new ChimpOptimizationAlgorithm(70, 5, 20, fitnessFunction, 0.2, 0.4);
-                CHOA.Solve();
-                Console.WriteLine($"Wektor: {String.Join(" ; ", CHOA.xAttacker.coordinates)}\nWartość: {CHOA.xAttacker.fitness}");
-            }
+            Console.WriteLine("-------------------------------------------\nSphere (0,0,0...)");
+            fitnessFunction = new Sphere();
+            raport = new Raport("Sphere", 10, 30, 60, fitnessFunction);
+            raport.TestAlgorithm();
+            raport2 = new Raport("Sphere", 20, 80, 100, fitnessFunction);
+            raport2.TestAlgorithm();
 
-            //IFitnessFunction fitnessFunction = new Rosenbrock();
-            //TestAlgorithm(fitnessFunction);
+            Console.WriteLine("-------------------------------------------\nBeale (3, 0.5)");
+            fitnessFunction = new Beale();
+            raport = new Raport("Beale", 2, 40, 60, fitnessFunction);
+            raport.TestAlgorithm();
+            raport2 = new Raport("Beale", 2, 80, 100, fitnessFunction);
+            raport2.TestAlgorithm();
 
+            Console.WriteLine("-------------------------------------------\nHimmeblau (3, 2) lub (-2.805118, 3.131312) lub (-3.779310, -3.283186) lub (3.584428, -1.848126)");
+            fitnessFunction = new Himmelblau();
+            raport = new Raport("HimmeBlau", 2, 30, 60, fitnessFunction);
+            raport.TestAlgorithm();
+            raport2 = new Raport("Himmeblau", 2, 80, 100, fitnessFunction);
+            raport2.TestAlgorithm();
 
-
-
-            /*Console.WriteLine("-------------------------------------------\nSpheare (0,0,0...)");
-            for (int i = 10; i < 200; i+=10)
-            {
-                for(int j = 10; j < 100; j*=2)
-                {
-                    List<double> bestX = new List<double>();
-                    for (double minM = 0.1; minM <1.9; minM += 0.1)
-                    {
-                        for(double maxM = minM +=0.1; maxM <2; maxM += 0.1)
-                        { 
-                            for (int iter = 0; iter < 10; iter++)
-                            {
-                                IFitnessFunction fitnessFunction = new Sphere();
-                                ChimpOptimizationAlgorithm CHOA = new ChimpOptimizationAlgorithm(i, 5, j, fitnessFunction, minM, maxM);
-                                CHOA.Solve();
-                                bestX.Add(Math.Abs(Math.Sqrt(CHOA.XBest.Sum(xi => xi * xi))-1));
-
-                            }
-                        }
-                    }
-                    bestX.Sort();
-                    Console.WriteLine($"Długość do minimum: {bestX[0]}");
-                }
-            }*/
-            /*Console.WriteLine("-------------------------------------------\nBeale (3, 0.5)");
-            for (int i = 10; i < 200; i += 10)
-            {
-                for (int j = 10; j < 100; j *= 2)
-                {
-                    List<double> bestX = new List<double>();
-                    for (double minM = 0.1; minM < 1.9; minM += 0.1)
-                    {
-                        for (double maxM = minM += 0.1; maxM < 2; maxM += 0.1)
-                        {
-                            for (int iter = 0; iter < 10; iter++)
-                            {
-                                IFitnessFunction fitnessFunction = new Beale();
-                                ChimpOptimizationAlgorithm CHOA = new ChimpOptimizationAlgorithm(i, 2, j, fitnessFunction, minM, maxM);
-                                CHOA.Solve();
-                                bestX.Add(Math.Sqrt(CHOA.XBest.Sum(xi => xi * xi)) - 3.04138);
-                            }
-                        }
-                    }
-                    bestX.Sort();
-                    Console.WriteLine($"Długość do minimum: {bestX[0]}");
-                }
-            }*/
-            /*Console.WriteLine("-------------------------------------------\nHimmeblau (3, 2) lub (-2.805118, 3.131312) lub (-3.779310, -3.283186) lub (3.584428, -1.848126)");
-            for (int i = 0; i < 10; i++)
-            {
-                IFitnessFunction fitnessFunction = new Himmelblau();
-                ChimpOptimizationAlgorithm CHOA = new ChimpOptimizationAlgorithm(80, 2, 100, fitnessFunction, 1.5);
-                CHOA.Solve();
-                Console.WriteLine($"Wektor: {String.Join("; ", CHOA.XBest)}\nWartość: {CHOA.FBest}");
-            }*/
+            Console.WriteLine("-------------------------------------------\nBukin (-10, 1)");
+            fitnessFunction = new Bukin();
+            raport = new Raport("Bukin", 2, 30, 50, fitnessFunction);
+            raport.TestAlgorithm();
+            raport2 = new Raport("Bukin", 2, 70, 90, fitnessFunction);
+            raport2.TestAlgorithm();
         }
     }
 }

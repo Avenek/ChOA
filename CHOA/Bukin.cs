@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace CHOA
 {
-    internal class Sphere : IFitnessFunction
+    internal class Bukin : IFitnessFunction
     {
-        public double variation { get { return 100000000; } }
+        public double variation { get { return 0; } }
         public double CalculateFitnesse(double[] position)
         {
-            return position.Sum(xi => Math.Pow(xi,2));
+            return 100 * Math.Sqrt(Math.Abs(position[1] - 0.01 * position[0] * position[0])) + 0.01 * Math.Abs(position[0] + 10);
         }
     }
 }

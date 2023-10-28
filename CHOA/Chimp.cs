@@ -19,15 +19,19 @@ namespace CHOA
         public double c;
         public double minM;
         public double maxM;
+        public double minC;
+        public double maxC;
 
         private static Random random = new Random();
 
-        public Chimp(int dimension, double minM, double maxM)
+        public Chimp(int dimension, double minM, double maxM, double minC, double maxC)
         {
             coordinates = new double[dimension];
             this.dimension = dimension;
             this.minM = minM;
             this.maxM = maxM;
+            this.minC = minC;
+            this.maxC = maxC;
         }
         public void CalculateF(int currentIteration, int maxIteration)
         {
@@ -58,7 +62,7 @@ namespace CHOA
 
        public void CalculateC()
         {
-            c = 2 * random.NextDouble();
+            c = 2 * random.NextDouble() * (maxC - minC) + minC;
         }
 
         public double CalculateD(Chimp chimp)

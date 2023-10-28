@@ -10,19 +10,25 @@ namespace CHOA
     {
         public double minM;
         public double maxM;
+        public double minC;
+        public double maxC;
+        public double[] stdX;
+        public double stdY;
+        public double[] coeffX;
+        public double coeffY;
         public Chimp chimp;
-        public int population;
-        public int iterations;
-        public double distance;
 
-        public BestParameters(Chimp chimp, double minM, double maxM, int population, int iterations, double distance)
+        public BestParameters(Chimp chimp, double minM, double maxM, double minC, double maxC, double[] stdX, double stdY, double[] coeffX, double coeffY)
         {
             this.minM = minM;
             this.maxM = maxM;
             this.chimp = chimp;
-            this.population = population;
-            this.iterations = iterations;
-            this.distance = distance;
+            this.minC = minC;
+            this.maxC = maxC;
+            this.stdX = stdX;
+            this.stdY = stdY;
+            this.coeffX = coeffX;
+            this.coeffY = coeffY;
         }
     }
 }
