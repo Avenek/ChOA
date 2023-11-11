@@ -10,4 +10,13 @@ namespace CHOA
     {
         void LoadFromFileStateOfAlghoritm(string path);
     }
+
+    public class StateReader : IStateReader
+    {
+        public StateReader() { }
+        public void LoadFromFileStateOfAlghoritm(string path)
+        {
+
+        }
+    }
 }

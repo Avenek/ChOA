@@ -11,4 +11,13 @@ namespace CHOA
         void SaveToFileStateOfAlghoritm(string path);
 
     }
+
+    public class StateWriter : IStateWriter
+    {
+        public StateWriter() { }
+        public void SaveToFileStateOfAlghoritm(string path)
+        {
+
+        }
+    }
 }

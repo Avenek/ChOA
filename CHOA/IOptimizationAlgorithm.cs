@@ -1,27 +1,23 @@
-﻿using CHOA;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-public delegate double fitnessFunction(params double[] arg);
-
-public interface IOptimizationAlgorithm
+﻿namespace CHOA
 {
-    string Name { get; set; }
 
-    void Solve(fitnessFunction f, double[,] domain, params double[] parameters);
+    public interface IOptimizationAlgorithm
+    {
+        string Name { get; set; }
 
-    ParamInfo[] ParamsInfo { get; set; }
+        void Solve(Func<double[], double> f, double[,] domain, params double[] parameters);
 
-    IStateWriter writer { get; set; }
+        ParamInfo[] ParamsInfo { get; set; }
 
-    IStateReader reader { get; set; }
-    IGenerateTextReport stringReportGenerator { get; set; }
-    IGeneratePDFReport pdfReportGenerator { get; set; }
+        IStateWriter Writer { get; set; }
 
-    double[] XBest { get; set; }
-    double FBest { get; set; }
-    int NumberOfEvaluationFitnessFunction { get; set; }
+        IStateReader Reader { get; set; }
+        IGenerateTextReport StringReportGenerator { get; set; }
+        IGeneratePDFReport PdfReportGenerator { get; set; }
 
+        double[] XBest { get; set; }
+        double FBest { get; set; }
+        int NumberOfEvaluationFitnessFunction { get; set; }
+
+    }
 }

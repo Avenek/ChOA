@@ -1,19 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using CHOA.TestFunctions;
-
-namespace CHOA
+﻿namespace CHOA
 {
-    internal class ChimpOptimizationAlgorithm : IOptimizationAlgorithm
+    public class ChimpOptimizationAlgorithm : IOptimizationAlgorithm
     {
-        int POPULATION_SIZE = 50;
-        int DIMENSION = 5;
-        int MAX_ITERATION = 100;
+        int populationSize;
+        int dimension;
+        int maxIteration;
 
         int currentIteration = 1;
 
@@ -22,85 +13,84 @@ namespace CHOA
         public double FBest { get; set; }
         public int NumberOfEvaluationFitnessFunction { get; set; }
         public ParamInfo[] ParamsInfo { get; set; }
-        public IStateWriter writer { get; set; }
-        public IStateReader reader { get; set; }
-        public IGenerateTextReport stringReportGenerator { get; set; }
-        public IGeneratePDFReport pdfReportGenerator { get; set; }
+        public IStateWriter Writer { get; set; }
+        public IStateReader Reader { get; set; }
+        public IGenerateTextReport StringReportGenerator { get; set; }
+        public IGeneratePDFReport PdfReportGenerator { get; set; }
 
         private static Random random = new Random();
 
         List<Chimp> population = new List<Chimp>();
 
-        public Chimp xAttacker;
+        Chimp xAttacker;
         Chimp xChaser;
         Chimp xBarrier;
         Chimp xDriver;
 
         public ChimpOptimizationAlgorithm()
         {
+            Writer = new StateWriter();
+            Reader = new StateReader();
+            ParamInfo populationSize = new ParamInfo("PopulationSize", "Liczba populacji", 10, 100);
+            ParamInfo dimension = new ParamInfo("Dimension", "Wymiar szukanych rozwiązań", 1, 30);
+            ParamInfo maxIteration = new ParamInfo("MaxIteration", "Całkowita liczba iteracji, po której algorytm zakończy działanie", 10, 100);
+            ParamInfo m = new ParamInfo("m", "Parametr służący do aktualizacji pozycji za pomocą chaotycznej wartości", 0, 2);
+            ParamInfo c = new ParamInfo("c", "Parametr służący do wyznaczania odległości", 0, 2);
+            ParamsInfo = new ParamInfo[] { populationSize, dimension, maxIteration, m, c };
         }
 
-        public double Solve()
+        public void Solve(Func<double[], double> f, double[,] domain, params double[] parameters)
         {
+            populationSize = (int)parameters[0];
+            dimension = (int)parameters[1];
+            maxIteration = (int)parameters[2];
+            double minM = parameters[3];
+            double maxM = parameters[4];
+            double minC = parameters[5];
+            double maxC = parameters[6];
 
-            InitializePopulation();
-            CalculateFittnesForEachChimp();
+            InitializePopulation(domain);
+            CalculateFitnessForEachChimp(f);
             ChooseBestAgents();
             DivideChimpsIntoGroups();
 
-            while(currentIteration <= MAX_ITERATION)
+            while (currentIteration <= maxIteration)
             {
                 foreach (Chimp chimp in population)
                 {
-                    CalculateParameters(chimp);
-                    UpdateChimpPositionByRules(chimp);
-                    chimp.fitness = fitnessFunction.CalculateFitnesse(chimp.coordinates);
+                    CalculateParameters(chimp, minM, maxM, minC, maxC);
+                    UpdateChimpPositionByRules(chimp, domain);
+                    chimp.fitness = f(chimp.coordinates);
+                    NumberOfEvaluationFitnessFunction++;
                 }
                 ChooseBestAgents();
                 UpdateBestChimpsPosition();
                 currentIteration++;
             }
-            FBest = fitnessFunction.CalculateFitnesse(xAttacker.coordinates);
+            FBest = f(xAttacker.coordinates);
             XBest = xAttacker.coordinates;
-            return FBest;
         }
 
-        private void InitializePopulation()
+        private void InitializePopulation(double[,] domain)
         {
-            for (int i = 0; i < POPULATION_SIZE; i++)
+            for (int i = 0; i < populationSize; i++)
             {
-                Chimp chimp = new Chimp(DIMENSION, minM, maxM, minC, maxC);
-                for (int j = 0; j < DIMENSION; j++)
+                Chimp chimp = new Chimp(dimension);
+                for (int j = 0; j < dimension; j++)
                 {
-                    //Bukin
-                    if(fitnessFunction.variation == 0)
-                    {
-                        if (j == 0)
-                        {
-                            chimp.coordinates[j] = random.NextDouble() * (-10) - 5;
-                        }
-                        else
-                        {
-                            chimp.coordinates[j] = random.NextDouble() * 6 - 3;
-                        }
-                        
-                    }
-                    //Reszta
-                    else
-                    {
-                        chimp.coordinates[j] = random.NextDouble() * (fitnessFunction.variation + fitnessFunction.variation) - fitnessFunction.variation;
-                    }
+                    chimp.coordinates[j] = random.NextDouble() * (domain[j,1] - domain[j, 0]) + domain[j, 0];
                     
                 }
                 population.Add(chimp);
             }
         }
 
-        private void CalculateFittnesForEachChimp()
+        private void CalculateFitnessForEachChimp(Func<double[], double> f)
         {
             foreach (Chimp chimp in population)
             {
-                chimp.fitness = fitnessFunction.CalculateFitnesse(chimp.coordinates);
+                chimp.fitness = f(chimp.coordinates);
+                NumberOfEvaluationFitnessFunction++;
             }
         }
 
@@ -115,7 +105,7 @@ namespace CHOA
                 var group = shuffledPopulation.Skip(i * groupSize).Take(groupSize).ToList();
                 foreach(Chimp chimp in group)
                 {
-                    chimp.setGroup(i);
+                    chimp.SetGroup(i);
                 }
             }
         }
@@ -134,13 +124,16 @@ namespace CHOA
             xDriver = chimps[3];
         }
 
-        public void CalculateParameters(Chimp chimp)
+        public void CalculateParameters(Chimp chimp, double minM, double maxM, double minC, double maxC)
         {
-            chimp.CalculateF(currentIteration, MAX_ITERATION);
-            chimp.CalculateM();
+            chimp.CalculateF(currentIteration, maxIteration);
+            chimp.CalculateM(minM, maxM);
             chimp.CalculateA();
-            chimp.CalculateC();
+            chimp.CalculateC(minC, maxC);
         }
+
+
+
 
         public void UpdateBestChimpsPosition()
         {
@@ -154,7 +147,7 @@ namespace CHOA
             xDriver.coordinates = xDriver.CalculateX(xDriver, dDriver);
         }
 
-        public void UpdateChimpPositionByRules(Chimp chimp)
+        public void UpdateChimpPositionByRules(Chimp chimp, double[,] domain)
         {
             if (random.NextDouble() > 0.5)
             {
@@ -170,13 +163,7 @@ namespace CHOA
             else
             {
                 chimp.UpdatePositionChaoticValue();
-
             }
-        }
-
-        public void Solve(fitnessFunction f, double[,] domain, params double[] parameters)
-        {
-            throw new NotImplementedException();
         }
     }
 }

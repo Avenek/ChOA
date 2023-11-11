@@ -8,7 +8,6 @@ namespace CHOA
 {
     public interface IFitnessFunction
     {
-        double variation { get; }
         double CalculateFitnesse(double[] position);
     }
 }

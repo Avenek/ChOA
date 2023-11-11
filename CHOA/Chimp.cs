@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CHOA
 {
-    internal class Chimp
+    public class Chimp
     {
         public double[] coordinates;
         public int dimension;
@@ -17,21 +17,13 @@ namespace CHOA
         public double m = 0.7;
         public double a;
         public double c;
-        public double minM;
-        public double maxM;
-        public double minC;
-        public double maxC;
 
         private static Random random = new Random();
 
-        public Chimp(int dimension, double minM, double maxM, double minC, double maxC)
+        public Chimp(int dimension)
         {
             coordinates = new double[dimension];
             this.dimension = dimension;
-            this.minM = minM;
-            this.maxM = maxM;
-            this.minC = minC;
-            this.maxC = maxC;
         }
         public void CalculateF(int currentIteration, int maxIteration)
         {
@@ -51,19 +43,19 @@ namespace CHOA
                     break;
             }
         }
-        public void CalculateM()
+        public void CalculateM(double minM, double maxM)
         {
-            m = 1.07 * (7.86 * m - 23.31 * m * m + 28.75 * m * m * m - 13.302875 * m * m * m * m);
+           m = random.NextDouble() * (maxM - minM) + minM;
         }
         public void CalculateA()
         {
            a = 2 * f * random.NextDouble() - f;
         }
 
-       public void CalculateC()
-        {
+       public void CalculateC(double minC, double maxC)
+       {
             c = 2 * random.NextDouble() * (maxC - minC) + minC;
-        }
+       }
 
         public double CalculateD(Chimp chimp)
         {
@@ -106,11 +98,11 @@ namespace CHOA
         {
             for (int i = 0; i < dimension; i++)
             {
-                coordinates[i] *= random.NextDouble()* (maxM - minM) + minM;
+                coordinates[i] *= m;
             }
         }
 
-        public void setGroup(int group)
+        public void SetGroup(int group)
         {
             strategy = group;
         }
