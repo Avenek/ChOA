@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CHOA
+namespace CHOA.TestFunctions
 {
     internal class Beale : IFitnessFunction
     {

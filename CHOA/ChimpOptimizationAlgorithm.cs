@@ -5,6 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using CHOA.TestFunctions;
 
 namespace CHOA
 {
@@ -20,6 +21,11 @@ namespace CHOA
         public double[] XBest { get; set; }
         public double FBest { get; set; }
         public int NumberOfEvaluationFitnessFunction { get; set; }
+        public ParamInfo[] ParamsInfo { get; set; }
+        public IStateWriter writer { get; set; }
+        public IStateReader reader { get; set; }
+        public IGenerateTextReport stringReportGenerator { get; set; }
+        public IGeneratePDFReport pdfReportGenerator { get; set; }
 
         private static Random random = new Random();
 
@@ -30,22 +36,8 @@ namespace CHOA
         Chimp xBarrier;
         Chimp xDriver;
 
-        IFitnessFunction fitnessFunction;
-        double maxM;
-        double minM;
-        double maxC;
-        double minC;
-
-        public ChimpOptimizationAlgorithm(int population, int dimension, int iteration, IFitnessFunction function, double minM, double maxM, double minC, double maxC)
+        public ChimpOptimizationAlgorithm()
         {
-            POPULATION_SIZE = population;
-            DIMENSION = dimension;
-            MAX_ITERATION = iteration;
-            fitnessFunction = function;
-            this.maxM = maxM;
-            this.minM = minM;
-            this.maxC = maxC;
-            this.minC = minC;
         }
 
         public double Solve()
@@ -180,6 +172,11 @@ namespace CHOA
                 chimp.UpdatePositionChaoticValue();
 
             }
+        }
+
+        public void Solve(fitnessFunction f, double[,] domain, params double[] parameters)
+        {
+            throw new NotImplementedException();
         }
     }
 }
