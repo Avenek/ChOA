@@ -29,7 +29,6 @@
 
         public ChimpOptimizationAlgorithm()
         {
-            Writer = new StateWriter();
             Reader = new StateReader();
             ParamInfo populationSize = new ParamInfo("PopulationSize", "Liczba populacji", 10, 100);
             ParamInfo dimension = new ParamInfo("Dimension", "Wymiar szukanych rozwiązań", 1, 30);
@@ -39,7 +38,7 @@
             ParamsInfo = new ParamInfo[] { populationSize, dimension, maxIteration, m, c };
         }
 
-        public void Solve(Func<double[], double> f, double[,] domain, params double[] parameters)
+        public void Solve(fitnessFunction f, double[,] domain, params double[] parameters)
         {
             populationSize = (int)parameters[0];
             dimension = (int)parameters[1];
@@ -48,12 +47,40 @@
             double maxM = parameters[4];
             double minC = parameters[5];
             double maxC = parameters[6];
+            string folderPath = @"C:\Sciezka\Do\Twojego\Folderu";
+            try
+            {
+                string[] files = Directory.GetFiles(folderPath);
 
-            InitializePopulation(domain);
-            CalculateFitnessForEachChimp(f);
-            ChooseBestAgents();
-            DivideChimpsIntoGroups();
+                if (files.Length > 0)
+                {
+                    DateTime latestDate = DateTime.MinValue;
+                    string latestFile = null;
 
+                    foreach (string file in files)
+                    {
+                        DateTime lastModified = File.GetLastWriteTime(file);
+
+                        if (lastModified > latestDate)
+                        {
+                            latestDate = lastModified;
+                            latestFile = file;
+                        }
+                    }
+                    var data = Reader.LoadFromFileStateOfAlghoritm(latestFile);
+                    currentIteration = data.Iteration;
+                    population = data.Population;
+                    FBest = data.FBest;
+                    NumberOfEvaluationFitnessFunction = data.NumberOfEvaluationFitnessFunction; 
+                }
+            }
+            catch(Exception e) 
+            {
+                InitializePopulation(domain);
+                CalculateFitnessForEachChimp(f);
+                ChooseBestAgents();
+                DivideChimpsIntoGroups();
+            }
             while (currentIteration <= maxIteration)
             {
                 foreach (Chimp chimp in population)
@@ -66,6 +93,9 @@
                 ChooseBestAgents();
                 UpdateBestChimpsPosition();
                 currentIteration++;
+                FBest = f(xAttacker.coordinates);
+                Writer = new StateWriter(currentIteration, population, FBest, NumberOfEvaluationFitnessFunction);
+                //Writer.SaveToFileStateOfAlghoritm("path");
             }
             FBest = f(xAttacker.coordinates);
             XBest = xAttacker.coordinates;
@@ -85,7 +115,7 @@
             }
         }
 
-        private void CalculateFitnessForEachChimp(Func<double[], double> f)
+        private void CalculateFitnessForEachChimp(fitnessFunction f)
         {
             foreach (Chimp chimp in population)
             {

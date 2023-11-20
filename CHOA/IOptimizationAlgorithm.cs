@@ -5,7 +5,7 @@
     {
         string Name { get; set; }
 
-        void Solve(Func<double[], double> f, double[,] domain, params double[] parameters);
+        void Solve(fitnessFunction f, double[,] domain, params double[] parameters);
 
         ParamInfo[] ParamsInfo { get; set; }
 

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Jakub\\Desktop\\Programowanie\\CHOA\\CHOA\\CHOA.csproj": {}
+    "C:\\Users\\Jakub\\OneDrive\\Desktop\\C#\\ChOA\\CHOA\\CHOA.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Jakub\\Desktop\\Programowanie\\CHOA\\CHOA\\CHOA.csproj": {
+    "C:\\Users\\Jakub\\OneDrive\\Desktop\\C#\\ChOA\\CHOA\\CHOA.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Jakub\\Desktop\\Programowanie\\CHOA\\CHOA\\CHOA.csproj",
+        "projectUniqueName": "C:\\Users\\Jakub\\OneDrive\\Desktop\\C#\\ChOA\\CHOA\\CHOA.csproj",
         "projectName": "CHOA",
-        "projectPath": "C:\\Users\\Jakub\\Desktop\\Programowanie\\CHOA\\CHOA\\CHOA.csproj",
+        "projectPath": "C:\\Users\\Jakub\\OneDrive\\Desktop\\C#\\ChOA\\CHOA\\CHOA.csproj",
         "packagesPath": "C:\\Users\\Jakub\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Jakub\\Desktop\\Programowanie\\CHOA\\CHOA\\obj\\",
+        "outputPath": "C:\\Users\\Jakub\\OneDrive\\Desktop\\C#\\ChOA\\CHOA\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -26,7 +26,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -44,6 +43,12 @@
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
+          "dependencies": {
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -60,7 +65,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.103\\RuntimeIdentifierGraph.json"
         }
       }
     }

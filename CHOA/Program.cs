@@ -6,7 +6,7 @@ namespace CHOA
     {
         static void Main()
         {
-            Func<double[], double> f = Sphere;
+            fitnessFunction f = Sphere;
             double[,] domain = new double[5, 2];
             for (int i = 0; i < 5; i++)
             { 

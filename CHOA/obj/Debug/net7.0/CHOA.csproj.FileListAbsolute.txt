@@ -28,3 +28,5 @@ C:\Users\Jakub\OneDrive\Desktop\C#\ChOA\CHOA\obj\Debug\net7.0\refint\CHOA.dll
 C:\Users\Jakub\OneDrive\Desktop\C#\ChOA\CHOA\obj\Debug\net7.0\CHOA.pdb
 C:\Users\Jakub\OneDrive\Desktop\C#\ChOA\CHOA\obj\Debug\net7.0\CHOA.genruntimeconfig.cache
 C:\Users\Jakub\OneDrive\Desktop\C#\ChOA\CHOA\obj\Debug\net7.0\ref\CHOA.dll
+C:\Users\Jakub\OneDrive\Desktop\C#\ChOA\CHOA\bin\Debug\net7.0\Newtonsoft.Json.dll
+C:\Users\Jakub\OneDrive\Desktop\C#\ChOA\CHOA\obj\Debug\net7.0\CHOA.csproj.CopyComplete
