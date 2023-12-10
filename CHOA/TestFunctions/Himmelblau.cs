@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CHOA
 {
-    internal class Himmelblau : IFitnessFunction
+    public class Himmelblau : IFitnessFunction
     {
         public double variation { get { return 5; } }
         public double CalculateFitnesse(double[] position)

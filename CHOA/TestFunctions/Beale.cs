@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CHOA.TestFunctions
 {
-    internal class Beale : IFitnessFunction
+    public class Beale : IFitnessFunction
     {
         public double variation { get { return 4.5; } }
         public double CalculateFitnesse(double[] position)

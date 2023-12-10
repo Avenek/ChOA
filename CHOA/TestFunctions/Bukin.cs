@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CHOA
 {
-    internal class Bukin : IFitnessFunction
+    public class Bukin : IFitnessFunction
     {
         public double variation { get { return 0; } }
         public double CalculateFitnesse(double[] position)

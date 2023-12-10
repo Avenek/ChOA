@@ -1,4 +1,4 @@
-﻿public delegate double fitnessFunction(params double[] arg);
+﻿
 
 namespace CHOA
 {
@@ -6,7 +6,7 @@ namespace CHOA
     {
         static void Main()
         {
-            fitnessFunction f = Sphere;
+            Rastrigin f = new Rastrigin();
             double[,] domain = new double[5, 2];
             for (int i = 0; i < 5; i++)
             { 
@@ -16,17 +16,13 @@ namespace CHOA
             for(int i = 0;i < 5; i++)
             {
                 ChimpOptimizationAlgorithm choa = new ChimpOptimizationAlgorithm();
-                choa.Solve(f, domain, 50, 5, 70, 0, 1, 0, 1);
+                double[] parameters = new double[] { 50, 5, 70, 0, 1, 0, 1 };
+                choa.Solve(f, domain, parameters);
                 Console.WriteLine(String.Join(" ; ", choa.XBest));
                 Console.WriteLine(choa.FBest);
             }
             
 
-        }
-
-        static double Sphere(double[] x)
-        {
-            return x.Sum(xi => Math.Pow(xi, 2));
         }
     }
 }

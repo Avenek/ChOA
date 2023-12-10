@@ -33,12 +33,15 @@
             ParamInfo populationSize = new ParamInfo("PopulationSize", "Liczba populacji", 10, 100);
             ParamInfo dimension = new ParamInfo("Dimension", "Wymiar szukanych rozwiązań", 1, 30);
             ParamInfo maxIteration = new ParamInfo("MaxIteration", "Całkowita liczba iteracji, po której algorytm zakończy działanie", 10, 100);
-            ParamInfo m = new ParamInfo("m", "Parametr służący do aktualizacji pozycji za pomocą chaotycznej wartości", 0, 2);
-            ParamInfo c = new ParamInfo("c", "Parametr służący do wyznaczania odległości", 0, 2);
-            ParamsInfo = new ParamInfo[] { populationSize, dimension, maxIteration, m, c };
+            ParamInfo minM = new ParamInfo("minM", "Parametr służący do aktualizacji pozycji za pomocą chaotycznej wartości", 0, 1.9);
+            ParamInfo maxM = new ParamInfo("maX", "Parametr służący do aktualizacji pozycji za pomocą chaotycznej wartości", 0.1, 2);
+            ParamInfo minC = new ParamInfo("minC", "Parametr służący do wyznaczania odległości", 0, 1.9);
+            ParamInfo maxC = new ParamInfo("maxC", "Parametr służący do wyznaczania odległości", 0.1, 2);
+
+            ParamsInfo = new ParamInfo[] { populationSize, dimension, maxIteration, minM, maxM, minC, maxC};
         }
 
-        public void Solve(fitnessFunction f, double[,] domain, params double[] parameters)
+        public void Solve(dynamic f, double[,] domain, params double[] parameters)
         {
             populationSize = (int)parameters[0];
             dimension = (int)parameters[1];
@@ -47,57 +50,27 @@
             double maxM = parameters[4];
             double minC = parameters[5];
             double maxC = parameters[6];
-            string folderPath = @"C:\Sciezka\Do\Twojego\Folderu";
-            try
-            {
-                string[] files = Directory.GetFiles(folderPath);
-
-                if (files.Length > 0)
-                {
-                    DateTime latestDate = DateTime.MinValue;
-                    string latestFile = null;
-
-                    foreach (string file in files)
-                    {
-                        DateTime lastModified = File.GetLastWriteTime(file);
-
-                        if (lastModified > latestDate)
-                        {
-                            latestDate = lastModified;
-                            latestFile = file;
-                        }
-                    }
-                    var data = Reader.LoadFromFileStateOfAlghoritm(latestFile);
-                    currentIteration = data.Iteration;
-                    population = data.Population;
-                    FBest = data.FBest;
-                    NumberOfEvaluationFitnessFunction = data.NumberOfEvaluationFitnessFunction; 
-                }
-            }
-            catch(Exception e) 
-            {
-                InitializePopulation(domain);
-                CalculateFitnessForEachChimp(f);
-                ChooseBestAgents();
-                DivideChimpsIntoGroups();
-            }
+            InitializePopulation(domain);
+            CalculateFitnessForEachChimp(f);
+            ChooseBestAgents();
+            DivideChimpsIntoGroups();
             while (currentIteration <= maxIteration)
             {
                 foreach (Chimp chimp in population)
                 {
                     CalculateParameters(chimp, minM, maxM, minC, maxC);
                     UpdateChimpPositionByRules(chimp, domain);
-                    chimp.fitness = f(chimp.coordinates);
+                    chimp.fitness = f.CalculateFitnesse(chimp.coordinates);
                     NumberOfEvaluationFitnessFunction++;
                 }
                 ChooseBestAgents();
                 UpdateBestChimpsPosition();
                 currentIteration++;
-                FBest = f(xAttacker.coordinates);
+                FBest = f.CalculateFitnesse(xAttacker.coordinates);
                 Writer = new StateWriter(currentIteration, population, FBest, NumberOfEvaluationFitnessFunction);
                 //Writer.SaveToFileStateOfAlghoritm("path");
             }
-            FBest = f(xAttacker.coordinates);
+            FBest = f.CalculateFitnesse(xAttacker.coordinates);
             XBest = xAttacker.coordinates;
         }
 
@@ -115,11 +88,11 @@
             }
         }
 
-        private void CalculateFitnessForEachChimp(fitnessFunction f)
+        private void CalculateFitnessForEachChimp(dynamic f)
         {
             foreach (Chimp chimp in population)
             {
-                chimp.fitness = f(chimp.coordinates);
+                chimp.fitness = f.CalculateFitnesse(chimp.coordinates);
                 NumberOfEvaluationFitnessFunction++;
             }
         }

@@ -30,3 +30,6 @@ C:\Users\Jakub\OneDrive\Desktop\C#\ChOA\CHOA\obj\Debug\net7.0\CHOA.genruntimecon
 C:\Users\Jakub\OneDrive\Desktop\C#\ChOA\CHOA\obj\Debug\net7.0\ref\CHOA.dll
 C:\Users\Jakub\OneDrive\Desktop\C#\ChOA\CHOA\bin\Debug\net7.0\Newtonsoft.Json.dll
 C:\Users\Jakub\OneDrive\Desktop\C#\ChOA\CHOA\obj\Debug\net7.0\CHOA.csproj.CopyComplete
+C:\Users\Jakub\Desktop\Programowanie\CHOA\CHOA\bin\Debug\net7.0\Newtonsoft.Json.dll
+C:\Users\Jakub\Desktop\Programowanie\CHOA\CHOA\obj\Debug\net7.0\CHOA.csproj.CopyComplete
+C:\Users\Jakub\Desktop\Programowanie\CHOA\CHOA\obj\Debug\net7.0\CHOA.sourcelink.json

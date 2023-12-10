@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace CHOA
 {
-    internal class Sphere : IFitnessFunction
+    public class Sphere : IFitnessFunction
     {
         public double variation { get { return 100000000; } }
+        public Sphere() { }
         public double CalculateFitnesse(double[] position)
         {
             return position.Sum(xi => Math.Pow(xi,2));

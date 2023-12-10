@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CHOA
 {
-    internal class Rastrigin : IFitnessFunction
+    public class Rastrigin : IFitnessFunction
     {
         public double variation { get { return 5.12; } }
         public double CalculateFitnesse(double[] position)
