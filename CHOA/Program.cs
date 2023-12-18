@@ -17,7 +17,7 @@ namespace CHOA
             {
                 ChimpOptimizationAlgorithm choa = new ChimpOptimizationAlgorithm();
                 double[] parameters = new double[] { 50, 5, 70, 0, 1, 0, 1 };
-                choa.Solve(f, domain, parameters);
+                choa.Solve(f, domain, parameters, false);
                 Console.WriteLine(String.Join(" ; ", choa.XBest));
                 Console.WriteLine(choa.FBest);
             }

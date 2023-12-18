@@ -1,4 +1,7 @@
-﻿namespace CHOA
+﻿using MySqlConnector;
+using System.Data.SqlClient;
+
+namespace CHOA
 {
     public class ChimpOptimizationAlgorithm : IOptimizationAlgorithm
     {
@@ -27,6 +30,7 @@
         Chimp xBarrier;
         Chimp xDriver;
 
+
         public ChimpOptimizationAlgorithm()
         {
             Reader = new StateReader();
@@ -41,8 +45,9 @@
             ParamsInfo = new ParamInfo[] { populationSize, dimension, maxIteration, minM, maxM, minC, maxC};
         }
 
-        public void Solve(dynamic f, double[,] domain, params double[] parameters)
+        public void Solve(dynamic f, double[,] domain, double[] parameters, bool resume = false)
         {
+            using var connection = new MySqlConnection("Server=localhost;Port=3307;Database=metaheuristicsystem;UID=metaheuristicadmin;PWD=12qwaszx");
             populationSize = (int)parameters[0];
             dimension = (int)parameters[1];
             maxIteration = (int)parameters[2];
@@ -50,10 +55,18 @@
             double maxM = parameters[4];
             double minC = parameters[5];
             double maxC = parameters[6];
-            InitializePopulation(domain);
-            CalculateFitnessForEachChimp(f);
-            ChooseBestAgents();
-            DivideChimpsIntoGroups();
+            if (resume)
+            {
+
+            }
+            else
+            {
+                InitializePopulation(domain);
+                CalculateFitnessForEachChimp(f);
+                ChooseBestAgents();
+                DivideChimpsIntoGroups();
+            }
+
             while (currentIteration <= maxIteration)
             {
                 foreach (Chimp chimp in population)
