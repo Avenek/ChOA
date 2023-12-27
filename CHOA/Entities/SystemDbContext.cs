@@ -17,8 +17,8 @@ namespace CHOA.Entities
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var connectionString = "Server=localhost;Database=NazwaBazy;User=TwojUzytkownik;Password=TwojeHaslo;";
-            optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+            //var connectionString = "Server=localhost;Database=NazwaBazy;User=TwojUzytkownik;Password=TwojeHaslo;";
+            //optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

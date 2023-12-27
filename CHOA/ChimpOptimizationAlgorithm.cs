@@ -35,19 +35,19 @@ namespace CHOA
         {
             Reader = new StateReader();
             ParamInfo populationSize = new ParamInfo("PopulationSize", "Liczba populacji", 10, 100);
-            ParamInfo dimension = new ParamInfo("Dimension", "Wymiar szukanych rozwiązań", 1, 30);
+            ParamInfo dimension = new ParamInfo("Dimension", "Wymiar szukanych rozwiązań", 2, 30);
             ParamInfo maxIteration = new ParamInfo("MaxIteration", "Całkowita liczba iteracji, po której algorytm zakończy działanie", 10, 100);
-            ParamInfo minM = new ParamInfo("minM", "Parametr służący do aktualizacji pozycji za pomocą chaotycznej wartości", 0, 1.9);
-            ParamInfo maxM = new ParamInfo("maX", "Parametr służący do aktualizacji pozycji za pomocą chaotycznej wartości", 0.1, 2);
-            ParamInfo minC = new ParamInfo("minC", "Parametr służący do wyznaczania odległości", 0, 1.9);
-            ParamInfo maxC = new ParamInfo("maxC", "Parametr służący do wyznaczania odległości", 0.1, 2);
+            ParamInfo minM = new ParamInfo("minM", "Parametr służący do aktualizacji pozycji za pomocą chaotycznej wartości", 0.1, 1.9);
+            ParamInfo maxM = new ParamInfo("maX", "Parametr służący do aktualizacji pozycji za pomocą chaotycznej wartości", 0.2, 2);
+            ParamInfo minC = new ParamInfo("minC", "Parametr służący do wyznaczania odległości", 0.1, 1.9);
+            ParamInfo maxC = new ParamInfo("maxC", "Parametr służący do wyznaczania odległości", 0.2, 2);
 
             ParamsInfo = new ParamInfo[] { populationSize, dimension, maxIteration, minM, maxM, minC, maxC};
         }
 
         public void Solve(dynamic f, double[,] domain, double[] parameters, bool resume = false)
         {
-            using var connection = new MySqlConnection("Server=localhost;Port=3307;Database=metaheuristicsystem;UID=metaheuristicadmin;PWD=12qwaszx");
+            //using var connection = new MySqlConnection("Server=localhost;Port=3307;Database=metaheuristicsystem;UID=metaheuristicadmin;PWD=12qwaszx");
             populationSize = (int)parameters[0];
             dimension = (int)parameters[1];
             maxIteration = (int)parameters[2];

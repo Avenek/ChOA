@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "+gs07A2oV1LRl+RaV2RGRX5Gx8MPfZ/SWY6V17Wu5CEgjKh8W3sOmP7Ls3df4NbwX3Y5BVYUvrnVCGg3qtawXQ==",
+  "dgSpecHash": "XYxLuhy0JmwvP1H5luDfDx09XDgzk2H8sGwnQohXJXoS8kNobOf24Uv8zHhNiRGVyRy2qC64IlTUKDk0jWFMHA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Jakub\\OneDrive\\Desktop\\C#\\ChOA\\CHOA\\CHOA.csproj",
+  "projectFilePath": "C:\\Users\\Jakub\\Desktop\\Programowanie\\CHOA\\CHOA\\CHOA.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Jakub\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",
     "C:\\Users\\Jakub\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
