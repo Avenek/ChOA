@@ -57,7 +57,10 @@ namespace CHOA
             double maxC = parameters[6];
             if (resume)
             {
-
+                InitializePopulation(domain);
+                CalculateFitnessForEachChimp(f);
+                ChooseBestAgents();
+                DivideChimpsIntoGroups();
             }
             else
             {
