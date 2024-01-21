@@ -10,6 +10,7 @@ namespace CHOA
     public class Chimp
     {
         public double[] coordinates;
+        public double[,] domain;
         public int dimension;
         public double fitness;
         public int strategy;
@@ -20,10 +21,11 @@ namespace CHOA
 
         private static Random random = new Random();
 
-        public Chimp(int dimension)
+        public Chimp(int dimension, double[,] domain)
         {
             coordinates = new double[dimension];
             this.dimension = dimension;
+            this.domain = domain;
         }
         public void CalculateF(int currentIteration, int maxIteration)
         {
@@ -72,7 +74,19 @@ namespace CHOA
             double[] x = new double[dimension];
             for (int i = 0; i < dimension; i++)
             {
-                x[i] = chimp.coordinates[i] - chimp.a * d;
+                if (chimp.coordinates[i] - chimp.a * d < domain[i, 0])
+                {
+                    x[i] = domain[i, 0];
+                }
+                else if (chimp.coordinates[i] - chimp.a * d > domain[i, 1])
+                {
+                    x[i] = domain[i, 1];
+                }
+                else
+                {
+                    x[i] = chimp.coordinates[i] - chimp.a * d;
+                }
+
             }
             return x;
         }
@@ -90,7 +104,19 @@ namespace CHOA
 
             for (int i = 0; i < dimension; i++)
             {
-               coordinates[i] = (x1[i] + x2[i] + x3[i] + x4[i])/4;
+                if((x1[i] + x2[i] + x3[i] + x4[i]) / 4 < domain[i, 0])
+                {
+                    coordinates[i] = domain[i, 0];
+                }
+                else if ((x1[i] + x2[i] + x3[i] + x4[i]) / 4 > domain[i, 1])
+                {
+                    coordinates[i] = domain[i, 1];
+                }
+                else
+                {
+                    coordinates[i] = (x1[i] + x2[i] + x3[i] + x4[i]) / 4;
+                }
+
             }
         }
 
@@ -98,7 +124,18 @@ namespace CHOA
         {
             for (int i = 0; i < dimension; i++)
             {
-                coordinates[i] *= m;
+                if (coordinates[i]*m < domain[i, 0])
+                {
+                    coordinates[i] = domain[i, 0];
+                }
+                else if (coordinates[i] * m > domain[i, 1])
+                {
+                    coordinates[i] = domain[i, 1];
+                }
+                else
+                {
+                    coordinates[i] *= m;
+                }
             }
         }
 

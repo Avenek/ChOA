@@ -94,7 +94,7 @@ namespace CHOA
         {
             for (int i = 0; i < populationSize; i++)
             {
-                Chimp chimp = new Chimp(dimension);
+                Chimp chimp = new Chimp(dimension, domain);
                 for (int j = 0; j < dimension; j++)
                 {
                     chimp.coordinates[j] = random.NextDouble() * (domain[j,1] - domain[j, 0]) + domain[j, 0];
