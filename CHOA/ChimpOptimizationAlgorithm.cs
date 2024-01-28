@@ -34,13 +34,13 @@ namespace CHOA
         public ChimpOptimizationAlgorithm()
         {
             Reader = new StateReader();
-            ParamInfo populationSize = new ParamInfo("PopulationSize", "Liczba populacji", 10, 100);
+            ParamInfo populationSize = new ParamInfo("PopulationSize", "Liczba populacji", 20,80);
             ParamInfo dimension = new ParamInfo("Dimension", "Wymiar szukanych rozwiązań", 2, 30);
-            ParamInfo maxIteration = new ParamInfo("MaxIteration", "Całkowita liczba iteracji, po której algorytm zakończy działanie", 10, 100);
-            ParamInfo minM = new ParamInfo("minM", "Parametr służący do aktualizacji pozycji za pomocą chaotycznej wartości", 0.1, 1.9);
-            ParamInfo maxM = new ParamInfo("maX", "Parametr służący do aktualizacji pozycji za pomocą chaotycznej wartości", 0.2, 2);
-            ParamInfo minC = new ParamInfo("minC", "Parametr służący do wyznaczania odległości", 0.1, 1.9);
-            ParamInfo maxC = new ParamInfo("maxC", "Parametr służący do wyznaczania odległości", 0.2, 2);
+            ParamInfo maxIteration = new ParamInfo("MaxIteration", "Całkowita liczba iteracji, po której algorytm zakończy działanie", 30, 90);
+            ParamInfo minM = new ParamInfo("minM", "Parametr służący do aktualizacji pozycji za pomocą chaotycznej wartości", 0.3, 1.5);
+            ParamInfo maxM = new ParamInfo("maxM", "Parametr służący do aktualizacji pozycji za pomocą chaotycznej wartości", 0.4, 1.6);
+            ParamInfo minC = new ParamInfo("minC", "Parametr służący do wyznaczania odległości", 0.3, 1.5);
+            ParamInfo maxC = new ParamInfo("maxC", "Parametr służący do wyznaczania odległości", 0.4, 1.6);
 
             ParamsInfo = new ParamInfo[] { populationSize, dimension, maxIteration, minM, maxM, minC, maxC};
         }
@@ -51,10 +51,10 @@ namespace CHOA
             populationSize = (int)parameters[0];
             dimension = (int)parameters[1];
             maxIteration = (int)parameters[2];
-            double minM = parameters[3];
-            double maxM = parameters[4];
-            double minC = parameters[5];
-            double maxC = parameters[6];
+            double minM = parameters[3] < parameters[4] ? parameters[3] : parameters[4];
+            double maxM = parameters[3] < parameters[4] ? parameters[4] : parameters[3];
+            double minC = parameters[5] < parameters[6] ? parameters[5] : parameters[6];
+            double maxC = parameters[5] < parameters[5] ? parameters[6] : parameters[5];
             if (resume)
             {
                 InitializePopulation(domain);
